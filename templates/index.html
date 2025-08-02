@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}TASK TERMINAL{% endblock %}
+
+{% block content %}
+<div class="cyber-card">
+    <div class="cyber-card-header">
+        <div class="d-flex justify-content-between">
+            <h2 class="neon-blue">ACTIVE TASKS <span class="neon-counter">{{ tasks|length }}</span></h2>
+            <div class="terminal-input">
+                <form method="POST" action="/">
+                    
+                    <div class="input-group">
+                        <input type="text" name="content" class="cyber-input" 
+                               placeholder="ENTER NEW DIRECTIVE..." required>
+                        
+                        <button class="cyber-button" button_type="submit">
+                            <i class="fas fa-terminal"></i> EXECUTE
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="cyber-card-body">
+        {% if tasks %}
+        <ul class="task-terminal" role="list">
+            {% for task in tasks %}
+            <li class="task-item" role="listitem">
+                <div class="task-content">
+                    <span class="task-id neon-purple">[TASK-{{ task.id }}]</span>
+                    <p class="task-text">{{ task.content }}</p>
+                    <small class="task-date">{{ task.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+                <div class="task-actions">
+                    <button class="cyber-button small" onclick="location.href='/update/{{ task.id }}'">
+                        <i class="fas fa-code"></i> EDIT
+                    </button>
+                    <button class="cyber-button small red" onclick="location.href='/delete/{{ task.id }}'">
+                        <i class="fas fa-skull"></i> TERMINATE
+                    </button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-robot neon-blue" aria-hidden="true"></i>
+            <h3 class="neon-pink">NO ACTIVE DIRECTIVES</h3>
+            <p>SYSTEM AWAITING INPUT</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

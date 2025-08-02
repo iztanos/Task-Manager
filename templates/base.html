@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache prevention -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title> TASK$4NIGHTERS - {% block title %}{% endblock %}</title>
+    
+    <!-- Preload Google Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap">
+    </noscript>
+    
+    <!-- Preload Font Awesome -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+    
+    <!-- Inline Critical CSS -->
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0a0a12;
+            color: #e0e0e0;
+        }
+        .cyber-container {
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+    </style>
+    
+    <!-- MAIN CSS FILE  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=1.1" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=1.1">
+    </noscript>
+</head>
+<body class="cyber-theme">
+    <div class="cyber-container">
+        <header class="cyber-header" role="banner">
+            <h1 class="neon-text" aria-label="tasks4nighters">
+                <span class="flicker-fast" aria-hidden="true">TASK$</span>4NIGHTERS
+                <span class="scanline" aria-hidden="true"></span>
+            </h1>
+            <p class="cyber-sub"> GOOD MORNING, <span class="neon-blue">NIGHT CITY!</span></p>
+        </header>
+
+        <main class="cyber-main" role="main">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="cyber-alert cyber-{{ category }}" role="alert" aria-live="assertive">
+                        <span class="glow">{{ message }}</span>
+                        <button class="cyber-close" aria-label="Close message" onclick="this.parentElement.style.display='none'">✖</button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="cyber-footer" role="contentinfo">
+            <div class="grid-line" aria-hidden="true"></div>
+            <p class="neon-pink">SYSTEM STATUS: <span class="blink" aria-label="Online">ONLINE</span></p>
+            <p>© <span id="current-year"></span> TANTAN MADE THIS</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Set current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Load non-critical JS
+        function loadScript(src) {
+            var script = document.createElement('script');
+            script.src = src + '?v=1.1';
+            script.async = true;
+            document.body.appendChild(script);
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            loadScript("{{ url_for('static', filename='js/cyber.js') }}");
+        });
+    </script>
+</body>
+</html>

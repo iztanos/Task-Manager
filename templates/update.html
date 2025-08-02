@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}UPDATE DIRECTIVE{% endblock %}
+
+{% block content %}
+<div class="cyber-card">
+    <div class="cyber-card-header">
+        <h2 class="neon-blue">UPDATE DIRECTIVE [TASK-{{ task.id }}]</h2>
+    </div>
+    
+    <div class="cyber-card-body">
+        <form method="POST" action="/update/{{ task.id }}">
+            
+            <div class="cyber-form-group">
+                <label for="content" class="neon-pink">NEW DIRECTIVE CONTENT</label>
+                <textarea id="content" class="cyber-input" name="content" rows="3" required
+                          maxlength="500" aria-describedby="content-help"
+                          oninput="updateCounter(this)">{{ task.content }}</textarea>
+                <div class="char-counter">
+                    <span id="char-count">{{ task.content|length }}</span>/500
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="cyber-alert cyber-{{ category }}">
+                            <span class="glow">{{ message }}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <div class="cyber-form-actions">
+                <button type="button" onclick="window.location.href='/'" class="cyber-button">
+                    <i class="fas fa-times"></i> ABORT
+                </button>
+                <button type="submit" class="cyber-button purple">
+                    <i class="fas fa-save"></i> COMMIT CHANGES
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateCounter(textarea) {
+        const counter = document.getElementById('char-count');
+        counter.textContent = textarea.value.length;
+    }
+</script>
+{% endblock %}
