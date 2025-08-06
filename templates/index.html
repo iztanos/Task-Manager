@@ -37,9 +37,11 @@
                     <button class="cyber-button small" onclick="location.href='/update/{{ task.id }}'">
                         <i class="fas fa-code"></i> EDIT
                     </button>
-                    <button class="cyber-button small red" onclick="location.href='/delete/{{ task.id }}'">
-                        <i class="fas fa-skull"></i> TERMINATE
-                    </button>
+                    <form action="/delete/{{ task.id }}" method="POST" style="display: inline;">
+                        <button type="submit" class="cyber-button small red" onclick="return confirm('ARE YOU SURE YOU WANT TO TERMINATE THIS DIRECTIVE?');">
+                            <i class="fas fa-skull"></i> TERMINATE
+                        </button>
+                    </form>
                 </div>
             </li>
             {% endfor %}

@@ -22,10 +22,10 @@ class Task(db.Model):
 @app.after_request
 def add_no_cache(response):
     """Prevent caching during development"""
-    if app.debug: 
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
+    if app.config['DEBUG']:
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
     return response
 
 @app.route('/', methods=['GET', 'POST'])
@@ -53,7 +53,7 @@ def index():
     tasks = Task.query.order_by(Task.date_created).all()
     return render_template('index.html', tasks=tasks)
 
-@app.route('/delete/<int:task_id>')
+@app.route('/delete/<int:task_id>', methods=['POST'])
 def delete(task_id):
     task_to_delete = Task.query.get_or_404(task_id)
     
@@ -65,7 +65,7 @@ def delete(task_id):
         db.session.rollback()
         app.logger.error(f'Error deleting task {task_id}: {str(e)}')
         flash('Error terminating task', 'error')
-    
+        
     return redirect(url_for('index'))
 
 @app.route('/update/<int:task_id>', methods=['GET', 'POST'])
